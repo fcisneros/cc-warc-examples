@@ -44,13 +44,13 @@ public class WATServerType extends Configured implements Tool {
 		job.setJarByClass(WATServerType.class);
 		job.setNumReduceTasks(1);
 		
-		String inputPath = "data/*.warc.wat.gz";
+		String inputPath = conf.get("input","data/*.warc.wat.gz");
 		//inputPath = "s3://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wet/CC-MAIN-20131204131715-00000-ip-10-33-133-15.ec2.internal.warc.wet.gz";
 		//inputPath = "s3://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wet/*.warc.wet.gz";
 		LOG.info("Input path: " + inputPath);
 		FileInputFormat.addInputPath(job, new Path(inputPath));
-		
-		String outputPath = "/tmp/cc/";
+
+		String outputPath = conf.get("output","/tmp/cc/");
 		FileSystem fs = FileSystem.newInstance(conf);
 		if (fs.exists(new Path(outputPath))) {
 			fs.delete(new Path(outputPath), true);
